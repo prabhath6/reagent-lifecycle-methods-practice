@@ -1,5 +1,6 @@
 (ns reagent-lifecycle-methods-practice.application
-  (:require [reagent-lifecycle-methods-practice.state :as s]))
+  (:require [reagent-lifecycle-methods-practice.state :as s]
+            [reagent-lifecycle-methods-practice.counter :as c]))
 
 (def style {:margin-top "40"
             :margin-bottom "10"})
@@ -21,7 +22,9 @@
 (defn increment-button []
   [:input {:type "button"
            :class "btn btn-success"
-           :value "Increment"}])
+           :value "Increment"
+           :on-click (fn [e]
+                       (swap! s/click-count inc))}])
 
 (defn application []
   [:div.container
@@ -32,4 +35,7 @@
             :group "role"
             :style style}
       [show-button]
-      [increment-button]]]]])
+      [increment-button]
+      (if @s/hidden?
+        [c/counter]
+        nil)]]]])
